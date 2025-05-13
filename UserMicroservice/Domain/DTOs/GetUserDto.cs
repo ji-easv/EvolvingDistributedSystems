@@ -6,5 +6,4 @@ public class GetUserDto
     public required string Nickname { get; set; } 
     public required string Email { get; set; }
     public required DateTime CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; }
 }
