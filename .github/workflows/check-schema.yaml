@@ -29,5 +29,5 @@ jobs:
       - name: Compare schemas
         uses: mvegter/openapi-diff-action@v0.23.5
         with:
-          head-spec: head/${{ inputs.service-name }}/spec/openapi-schema.json
-          base-spec: main/${{ inputs.service-name }}/spec/openapi-schema.json
+          head-spec: head/${{ inputs.service-name }}/openapi-schema.json
+          base-spec: main/${{ inputs.service-name }}/openapi-schema.json
