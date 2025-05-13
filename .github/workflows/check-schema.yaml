@@ -11,8 +11,15 @@ jobs:
   check-schema:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout head branch
         uses: actions/checkout@v4
+        with:
+          path: head
+      
+      - name: Checkout base branch
+        uses: actions/checkout@v4
+        with:
+          path: main
 
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
@@ -22,5 +29,5 @@ jobs:
       - name: Compare schemas
         uses: mvegter/openapi-diff-action@v0.23.5
         with:
-          head-spec: ${{ inputs.service-name }}/spec/openapi-schema.json
-          base-spec: base/${{ inputs.service-name }}/spec/openapi-schema.json
+          head-spec: head/${{ inputs.service-name }}/spec/openapi-schema.json
+          base-spec: main/${{ inputs.service-name }}/spec/openapi-schema.json

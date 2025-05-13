@@ -98,7 +98,7 @@ public static class UserApi
             Nickname = user.Nickname,
             Email = user.Email,
             CreatedAt = user.CreatedAt,
-            UpdatedAt = user.UpdatedAt
+            // UpdatedAt = user.UpdatedAt
         };
     }
 }
