@@ -1,3 +1,5 @@
+name: User Microservice CI
+
 on:
   pull_request:
     paths:
@@ -5,6 +7,6 @@ on:
 
 jobs:
   check-user-schema:
-    uses: ./.github/workflows/reusable-check-schema.yaml
+    uses: ./.github/workflows/check-schema.yaml
     with:
       service-name: UserMicroservice
