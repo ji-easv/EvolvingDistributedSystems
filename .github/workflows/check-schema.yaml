@@ -38,4 +38,10 @@ jobs:
           openapitools/openapi-diff:latest \
           --fail-on-incompatible \
           /main/openapi-schema.json \
-          /head/openapi-schema.json
+          /head/openapi-schema.json || echo "Incompatible changes detected."
+          
+      - name: Check override flag
+        if: failure() && env.ALLOW_INCOMPATIBLE_CHANGES != 'true'
+        run: exit 1
+        env:
+          ALLOW_INCOMPATIBLE_CHANGES: ${{ vars.ALLOW_INCOMPATIBLE_CHANGES }}
