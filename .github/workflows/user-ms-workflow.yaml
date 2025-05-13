@@ -3,7 +3,7 @@ name: User Microservice CI
 on:
   pull_request:
     paths:
-      - 'UserMicroservice/**'ň
+      - 'UserMicroservice/**'
   workflow_call:
 
 jobs:
