@@ -5,6 +5,7 @@ on:
 
 jobs:
   check-user-schema:
-    uses: ./.github/workflows/reusable-check-schema.yaml
+    name: Check User Microservice Schema diff
+    uses: ./.github/workflows/check-schema.yaml
     with:
       service-name: UserMicroservice
