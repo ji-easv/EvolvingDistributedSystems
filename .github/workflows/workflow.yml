@@ -1,0 +1,22 @@
+﻿name: Main Workflow
+
+on:
+  pull_request: 
+    branches:
+      - main
+  push: 
+    branches:
+      - main
+
+jobs:
+  check-user-schema:
+    name: Check User Microservice Schema diff
+    uses: ./.github/workflows/user-ms-workflow.yaml
+    with:
+      service-name: UserMicroservice
+
+  check-group-schema:
+    name: Check Group Microservice Schema diff
+    uses: ./.github/workflows/group-ms-workflow.yaml
+    with:
+      service-name: GroupMicroservice
