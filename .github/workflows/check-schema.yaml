@@ -20,16 +20,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: main
-          
-      - name: Install Java
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'oracle'
-          
-#      - name: Download openapi-diff
-#        run: |
-#          curl -L -o openapi-diff.jar https://github.com/OpenAPITools/openapi-diff/releases/latest/download/openapi-diff.jar
 
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
@@ -39,7 +29,6 @@ jobs:
       - name: Build and generate OpenAPI schema
         run: | 
           dotnet build head/${{ inputs.service-name }}/${{ inputs.service-name }}.csproj
-#          cp head/${{ inputs.service-name }}/bin/Debug/net9.0/openapi-schema.json head/${{ inputs.service-name }}/openapi-schema.json
 
       - name: Compare schemas
         run: |
