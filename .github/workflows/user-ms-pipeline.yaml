@@ -3,7 +3,8 @@ name: User Microservice CI
 on:
   pull_request:
     paths:
-      - 'UserMicroservice/**'
+      - 'UserMicroservice/**'ň
+  workflow_call:
 
 jobs:
   check-user-schema:

@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'GroupMicroservice/**'
+  workflow_call:
 
 jobs:
   check-user-schema:
