@@ -33,17 +33,10 @@ jobs:
       - name: Compare schemas
         run: |
           echo "Comparing OpenAPI schemas..."
-          echo "ALLOW_INCOMPATIBLE_CHANGES = ${{ vars.ALLOW_INCOMPATIBLE_CHANGES }}"
           docker run --rm \
           -v ${{ github.workspace }}/main/${{ inputs.service-name }}:/main \
           -v ${{ github.workspace }}/head/${{ inputs.service-name }}:/head \
           openapitools/openapi-diff:latest \
           --fail-on-incompatible \
           /main/openapi-schema.json \
-          /head/openapi-schema.json || echo "Incompatible changes detected."
-          
-      - name: Check override flag
-        if: failure() && env.ALLOW_INCOMPATIBLE_CHANGES != 'true'
-        run: exit 1
-        env:
-          ALLOW_INCOMPATIBLE_CHANGES: ${{ vars.ALLOW_INCOMPATIBLE_CHANGES }}
+          /head/openapi-schema.json
