@@ -32,6 +32,8 @@ jobs:
 
       - name: Compare schemas
         run: |
+          echo "Comparing OpenAPI schemas..."
+          echo "ALLOW_INCOMPATIBLE_CHANGES = ${{ vars.ALLOW_INCOMPATIBLE_CHANGES }}"
           docker run --rm \
           -v ${{ github.workspace }}/main/${{ inputs.service-name }}:/main \
           -v ${{ github.workspace }}/head/${{ inputs.service-name }}:/head \
