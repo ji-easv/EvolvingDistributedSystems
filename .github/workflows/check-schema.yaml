@@ -1,7 +1,12 @@
+name: Check OpenAPI Schema
+
 on:
-  pull_request:
-    types: 
-      - opened
+  workflow_call:
+    inputs:
+      service-name:
+        required: true
+        type: string
+        
 jobs:
   check-schema:
     runs-on: ubuntu-latest
@@ -17,5 +22,5 @@ jobs:
       - name: Compare schemas
         uses: mvegter/openapi-diff-action@v0.23.5
         with:
-          head-spec: head/spec/openapi-schema.json
-          base-spec: base/spec/openapi-schema.json
+          head-spec: ${{ inputs.service-name }}/spec/openapi-schema.json
+          base-spec: base/${{ inputs.service-name }}/spec/openapi-schema.json
