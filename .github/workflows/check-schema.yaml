@@ -44,4 +44,4 @@ jobs:
         if: failure() && env.ALLOW_INCOMPATIBLE_CHANGES != 'true'
         run: exit 1
         env:
-          ALLOW_INCOMPATIBLE_CHANGES: ${{ secrets.ALLOW_INCOMPATIBLE_CHANGES }}
+          ALLOW_INCOMPATIBLE_CHANGES: ${{ vars.ALLOW_INCOMPATIBLE_CHANGES }}
