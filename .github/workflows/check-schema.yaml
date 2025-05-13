@@ -38,8 +38,8 @@ jobs:
       
       - name: Build and generate OpenAPI schema
         run: | 
-          dotnet build ${{ inputs.service-name }}/${{ inputs.service-name }}.csproj
-          cp head/${{ inputs.service-name }}/bin/Debug/net9.0/openapi-schema.json head/${{ inputs.service-name }}/openapi-schema.json
+          dotnet build head/${{ inputs.service-name }}/${{ inputs.service-name }}.csproj
+#          cp head/${{ inputs.service-name }}/bin/Debug/net9.0/openapi-schema.json head/${{ inputs.service-name }}/openapi-schema.json
 
       - name: Compare schemas
         run: |
