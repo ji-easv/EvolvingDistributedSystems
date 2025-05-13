@@ -27,9 +27,9 @@ jobs:
           java-version: '21'
           distribution: 'oracle'
           
-      - name: Download openapi-diff
-        run: |
-          curl -L -o openapi-diff.jar https://github.com/OpenAPITools/openapi-diff/releases/latest/download/openapi-diff.jar
+#      - name: Download openapi-diff
+#        run: |
+#          curl -L -o openapi-diff.jar https://github.com/OpenAPITools/openapi-diff/releases/latest/download/openapi-diff.jar
 
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
@@ -43,7 +43,10 @@ jobs:
 
       - name: Compare schemas
         run: |
-          java -jar openapi-diff.jar \
-            --fail-on-incompatible \
-            main/${{ inputs.service-name }}/openapi-schema.json \
-            head/${{ inputs.service-name }}/openapi-schema.json
+          docker run --rm \
+          -v ${{ github.workspace }}/main/${{ inputs.service-name }}:/main \
+          -v ${{ github.workspace }}/head/${{ inputs.service-name }}:/head \
+          openapitools/openapi-diff:latest \
+          --fail-on-incompatible \
+          /main/openapi-schema.json \
+          /head/openapi-schema.json
