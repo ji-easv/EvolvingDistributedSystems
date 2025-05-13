@@ -1,0 +1,30 @@
+﻿services:
+  group-ms:
+    image: group-ms
+    build:
+      context: .
+      dockerfile: GroupMicroservice/Dockerfile
+  
+  group-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: group_db
+    ports:
+      - "5432:5432"
+  
+  user-ms:
+    image: user-ms
+    build:
+      context: .
+      dockerfile: UserMicroservice/Dockerfile
+      
+  user-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: user_db
+    ports:
+      - "5433:5432"

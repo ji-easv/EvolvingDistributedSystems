@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8533EB13-EDC9-476B-B721-FEC7DB75E128}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserMicroservice", "UserMicroservice\UserMicroservice.csproj", "{0DE1681B-3219-425E-83ED-7CBFC0521308}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroupMicroservice", "GroupMicroservice\GroupMicroservice.csproj", "{13AA92BA-12D1-4830-A6F0-B5DA95B259BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0DE1681B-3219-425E-83ED-7CBFC0521308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DE1681B-3219-425E-83ED-7CBFC0521308}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DE1681B-3219-425E-83ED-7CBFC0521308}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DE1681B-3219-425E-83ED-7CBFC0521308}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13AA92BA-12D1-4830-A6F0-B5DA95B259BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13AA92BA-12D1-4830-A6F0-B5DA95B259BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13AA92BA-12D1-4830-A6F0-B5DA95B259BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13AA92BA-12D1-4830-A6F0-B5DA95B259BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0DE1681B-3219-425E-83ED-7CBFC0521308} = {8533EB13-EDC9-476B-B721-FEC7DB75E128}
+		{13AA92BA-12D1-4830-A6F0-B5DA95B259BE} = {8533EB13-EDC9-476B-B721-FEC7DB75E128}
+	EndGlobalSection
+EndGlobal
