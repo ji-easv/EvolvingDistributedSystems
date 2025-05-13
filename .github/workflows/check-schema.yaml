@@ -1,0 +1,21 @@
+on:
+  pull_request:
+    types: 
+      - opened
+jobs:
+  check-schema:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Compare schemas
+        uses: mvegter/openapi-diff-action@v0.23.5
+        with:
+          head-spec: head/spec/openapi-schema.json
+          base-spec: base/spec/openapi-schema.json

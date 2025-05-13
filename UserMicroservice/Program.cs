@@ -1,5 +1,7 @@
+using System.Text;
 using Asp.Versioning;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Writers;
 using UserMicroservice.Infrastructure;
 using UserMicroservice.Presentation;
 
