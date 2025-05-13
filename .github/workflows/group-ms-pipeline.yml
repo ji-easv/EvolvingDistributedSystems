@@ -1,0 +1,13 @@
+name: Group Microservice CI
+
+on:
+  pull_request:
+    paths:
+      - 'GroupMicroservice/**'
+
+jobs:
+  check-user-schema:
+    name: Check Group Microservice Schema diff
+    uses: ./.github/workflows/check-schema.yaml
+    with:
+      service-name: GroupMicroservice
