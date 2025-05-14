@@ -18,5 +18,5 @@ jobs:
     name: Check Group Microservice Consumer contract
     uses: ./.github/workflows/check-consumer-contract.yaml
     with:
-      base-dir: GroupMicroservice
+      base-dir: GroupMicroservice.Tests
       contract-file: pact/GroupMicroservice-UserMicroservice.json
