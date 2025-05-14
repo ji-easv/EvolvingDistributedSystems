@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <RootNamespace>MatchMicroservice</RootNamespace>
+        <RootNamespace>GroupMicroservice</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

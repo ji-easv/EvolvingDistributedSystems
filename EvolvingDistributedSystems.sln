@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserMicroservice", "UserMic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroupMicroservice", "GroupMicroservice\GroupMicroservice.csproj", "{13AA92BA-12D1-4830-A6F0-B5DA95B259BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroupMicroservice.Tests", "GroupMicroservice.Tests\GroupMicroservice.Tests.csproj", "{571D02EC-6F50-4247-B4B2-F86F6E7669F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserMicroservice.Tests", "UserMicroservice.Tests\UserMicroservice.Tests.csproj", "{30D27502-6E51-4D29-971C-E82DCCF9DC56}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,9 +27,19 @@ Global
 		{13AA92BA-12D1-4830-A6F0-B5DA95B259BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13AA92BA-12D1-4830-A6F0-B5DA95B259BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13AA92BA-12D1-4830-A6F0-B5DA95B259BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{571D02EC-6F50-4247-B4B2-F86F6E7669F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{571D02EC-6F50-4247-B4B2-F86F6E7669F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{571D02EC-6F50-4247-B4B2-F86F6E7669F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{571D02EC-6F50-4247-B4B2-F86F6E7669F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30D27502-6E51-4D29-971C-E82DCCF9DC56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30D27502-6E51-4D29-971C-E82DCCF9DC56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30D27502-6E51-4D29-971C-E82DCCF9DC56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30D27502-6E51-4D29-971C-E82DCCF9DC56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0DE1681B-3219-425E-83ED-7CBFC0521308} = {8533EB13-EDC9-476B-B721-FEC7DB75E128}
 		{13AA92BA-12D1-4830-A6F0-B5DA95B259BE} = {8533EB13-EDC9-476B-B721-FEC7DB75E128}
+		{571D02EC-6F50-4247-B4B2-F86F6E7669F1} = {8533EB13-EDC9-476B-B721-FEC7DB75E128}
+		{30D27502-6E51-4D29-971C-E82DCCF9DC56} = {8533EB13-EDC9-476B-B721-FEC7DB75E128}
 	EndGlobalSection
 EndGlobal
