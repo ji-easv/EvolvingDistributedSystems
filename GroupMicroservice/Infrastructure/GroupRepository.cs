@@ -1,4 +1,4 @@
-﻿namespace MatchMicroservice.Infrastructure;
+﻿namespace GroupMicroservice.Infrastructure;
 
 public class GroupRepository
 {
