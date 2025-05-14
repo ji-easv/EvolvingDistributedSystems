@@ -26,7 +26,7 @@ jobs:
       - name: Backup existing contract file
         run: |
           echo "Backing up the existing contract file..."
-          cd ${{ inputs.base-dir }}/pact
+          cd ${{ inputs.base-dir }}/pacts
           mv ${{ inputs.contract-file }} ${{ inputs.contract-file }}.current
           
       - name: Generate Consumer Contract
@@ -38,10 +38,10 @@ jobs:
       - name: Compare contract files
         run: |
           echo "Comparing contract files..."
-          cd ${{ inputs.base-dir }}/pact
+          cd ${{ inputs.base-dir }}/pacts
           if diff ${{ inputs.contract-file }} ${{ inputs.contract-file }}.current; then
             echo "No uncomitted changes detected in the contract file."
           else
-            echo "Uncommitted changes detected in the contract file! Please update the contract file by running the command 'dotnet test' in the pact directory, and commit the changes."
+            echo "Uncommitted changes detected in the contract file! Please update the contract file by running the command 'dotnet test' in the pacts directory, and commit the changes."
             exit 1
           fi
