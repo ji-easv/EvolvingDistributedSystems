@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'GroupMicroservice/**'
+      - 'GroupMicroservice.Tests/**'
   workflow_call:
 
 jobs:
@@ -12,3 +13,10 @@ jobs:
     uses: ./.github/workflows/check-schema.yaml
     with:
       service-name: GroupMicroservice
+  
+  check-consumer-contract:
+    name: Check Group Microservice Consumer contract
+    uses: ./.github/workflows/check-consumer-contract.yaml
+    with:
+      base-dir: GroupMicroservice
+      contract-file: pact/GroupMicroservice-UserMicroservice.json

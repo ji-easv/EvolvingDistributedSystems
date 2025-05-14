@@ -1,0 +1,80 @@
+{
+  "consumer": {
+    "name": "GroupMicroservice"
+  },
+  "interactions": [
+    {
+      "description": "A valid request for a single user by ID",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "a user with id 03247a5f-b7c9-4b88-8a6b-a3b583594efd exists",
+          "params": {
+            "id": "03247a5f-b7c9-4b88-8a6b-a3b583594efd"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/api/v1/user/03247a5f-b7c9-4b88-8a6b-a3b583594efd"
+      },
+      "response": {
+        "body": {
+          "content": {
+            "createdAt": "2009-07-27T00:00:00",
+            "email": "test@example.com",
+            "id": "03247a5f-b7c9-4b88-8a6b-a3b583594efd",
+            "nickname": "Bobby",
+            "updatedAt": null
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json; charset=utf-8"
+          ]
+        },
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "description": "A valid request for a single user by ID",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "a user with id df721117-36ab-4b87-a9ec-2319a56f53c9 does not exist",
+          "params": {
+            "id": "df721117-36ab-4b87-a9ec-2319a56f53c9"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/api/v1/user/df721117-36ab-4b87-a9ec-2319a56f53c9"
+      },
+      "response": {
+        "headers": {
+          "Content-Type": [
+            "application/json; charset=utf-8"
+          ]
+        },
+        "status": 404
+      },
+      "type": "Synchronous/HTTP"
+    }
+  ],
+  "metadata": {
+    "pactRust": {
+      "ffi": "0.4.27",
+      "models": "1.2.8"
+    },
+    "pactSpecification": {
+      "version": "4.0"
+    }
+  },
+  "provider": {
+    "name": "UserMicroservice"
+  }
+}

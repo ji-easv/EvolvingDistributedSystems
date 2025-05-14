@@ -7,7 +7,6 @@ using GroupMicroservice.Domain.DTOs;
 using Moq;
 using PactNet;
 using PactNet.Output.Xunit;
-using Xunit;
 using Xunit.Abstractions;
 
 namespace GroupMicroservice.Tests;
@@ -35,20 +34,20 @@ public class UserApiTests
             },
             LogLevel = PactLogLevel.Debug
         };
-        _pact = Pact.V4("Group Microservice", "User Microservice", config).WithHttpInteractions();
+        _pact = Pact.V4("GroupMicroservice", "UserMicroservice", config).WithHttpInteractions();
     }
 
     [Fact]
     public async Task GetUserAsync_WhenCalled_ReturnsGetUserDto()
     {
-        var id = Guid.NewGuid();
+        var id = Guid.Parse("03247A5F-B7C9-4B88-8A6B-A3B583594EFD");
 
         var expectedUser = new GetUserDto
         {
             Id = id,
             Email = "test@example.com",
             Nickname = "Bobby",
-            CreatedAt = DateTime.UtcNow
+            CreatedAt = new DateTime(2009, 7, 27, 0, 0, 0),
         };
         
         // Arrange
@@ -81,7 +80,7 @@ public class UserApiTests
     [Fact]
     public async Task GetUserAsync_WhenCalled_ReturnsNotFound()
     {
-        var id = Guid.NewGuid();
+        var id = Guid.Parse("DF721117-36AB-4B87-A9EC-2319A56F53C9");
 
         // Arrange
         _pact.UponReceiving("A valid request for a single user by ID")

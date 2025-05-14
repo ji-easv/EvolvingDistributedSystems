@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'UserMicroservice/**'
+      - 'UserMicroservice.Tests/**'
   workflow_call:
 
 jobs:

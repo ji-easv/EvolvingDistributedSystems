@@ -1,0 +1,47 @@
+name: Check consumer contract for uncommitted changes
+description: This workflow checks for uncommitted changes in the consumer contract file. This is to ensure that the contract file is up to date with the latest changes in the consumer service. If there are uncommitted changes, the workflow will fail and prompt the user to update the contract file.
+
+on:
+  workflow_call:
+    inputs:
+      base-dir:
+        required: true
+        type: string
+      contract-file:
+        required: true
+        type: string
+
+jobs:
+    check-consumer-contract:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout head branch
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Backup existing contract file
+        run: |
+          echo "Backing up the existing contract file..."
+          cd ${{ inputs.base-dir }}/pact
+          mv ${{ inputs.contract-file }} ${{ inputs.contract-file }}.current
+          
+      - name: Generate Consumer Contract
+        run: |
+          echo "Generating Consumer Contract..."
+          cd ${{ inputs.base-dir }}
+          dotnet test
+          
+      - name: Compare contract files
+        run: |
+          echo "Comparing contract files..."
+          cd ${{ inputs.base-dir }}/pact
+          if diff ${{ inputs.contract-file }} ${{ inputs.contract-file }}.current; then
+            echo "No uncomitted changes detected in the contract file."
+          else
+            echo "Uncommitted changes detected in the contract file! Please update the contract file by running the command 'dotnet test' in the pact directory, and commit the changes."
+            exit 1
+          fi
