@@ -35,11 +35,6 @@ jobs:
           cd ${{ inputs.base-dir }}
           dotnet restore
           dotnet test
-
-      - name: Debug pacts directory
-        run: |
-          echo "Listing contents of pacts directory..."
-          ls -la GroupMicroservice.Tests/pacts
           
       - name: Compare contract files
         run: |
