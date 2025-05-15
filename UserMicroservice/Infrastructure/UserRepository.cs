@@ -15,16 +15,18 @@ public class UserRepository(AppDbContext context) : IUserRepository
         return await context.Users.FirstOrDefaultAsync(u => u.Email == email);
     }
 
-    public async Task CreateUserAsync(UserEntity user)
+    public async Task<UserEntity> CreateUserAsync(UserEntity user)
     {
-        await context.Users.AddAsync(user);
+        var result = await context.Users.AddAsync(user);
         await context.SaveChangesAsync();
+        return result.Entity;
     }
 
-    public async Task UpdateUserAsync(UserEntity user)
+    public async Task<UserEntity> UpdateUserAsync(UserEntity user)
     {
-        context.Users.Update(user);
+        var result = context.Users.Update(user);
         await context.SaveChangesAsync();
+        return result.Entity;
     }
 
     public async Task DeleteUserAsync(UserEntity user)

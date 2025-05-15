@@ -1,7 +1,10 @@
 ﻿using Asp.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
+using UserMicroservice.Application;
 using UserMicroservice.Infrastructure;
+using UserMicroservice.Presentation.Apis;
+using UserMicroservice.Presentation.Middleware;
 
 namespace UserMicroservice;
 
@@ -10,6 +13,9 @@ public class Startup(IConfiguration configuration)
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddProblemDetails();
+        
         services.AddDbContext<AppDbContext>(options =>
         {
             var connectionString = configuration.GetConnectionString("UserDb");
@@ -21,7 +27,9 @@ public class Startup(IConfiguration configuration)
         services.AddOpenApi(options => { options.OpenApiVersion = OpenApiSpecVersion.OpenApi3_0; });
         services.AddSwaggerGen();
 
-        services.AddScoped<IUserRepository, UserRepository>();
+        /* TODO: uncomment
+         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUserService, UserService>();*/ 
         services.AddProblemDetails();
 
         services.AddApiVersioning(options =>
@@ -42,5 +50,26 @@ public class Startup(IConfiguration configuration)
     {
         // Configure the HTTP request pipeline.
         app.UseHttpsRedirection();
+
+        if (app is WebApplication webApplication)
+        {
+            var apiVersionSet = webApplication.NewApiVersionSet()
+                .HasApiVersion(new ApiVersion(1))
+                .ReportApiVersions()
+                .Build();
+            
+            webApplication.AddUserApi()
+                .WithApiVersionSet(apiVersionSet)
+                .MapToApiVersion(1);
+            
+            if (env.IsDevelopment())
+            {
+                webApplication.MapOpenApi();
+                webApplication.UseSwagger();
+                webApplication.UseSwaggerUI();
+            }
+        }
+
+        app.UseExceptionHandler();
     }
 }

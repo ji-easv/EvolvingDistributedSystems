@@ -1,4 +1,5 @@
-﻿using UserMicroservice.Infrastructure;
+﻿using UserMicroservice.Application;
+using UserMicroservice.Infrastructure;
 
 namespace UserMicroservice.Tests;
 
@@ -8,15 +9,16 @@ public class TestStartup(IConfiguration configuration)
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddScoped<IUserRepository, MockUserRepository>();
-
         _inner.ConfigureServices(services);
+        
+        services.AddScoped<IUserService, UserService>();
+        services.AddSingleton<IUserRepository, MockUserRepository>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         app.UseMiddleware<ProviderStateMiddleware>();
-
+        
         _inner.Configure(app, env);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Text.Json;
 using PactNet;
-using UserMicroservice.Domain.DTOs;
+using UserMicroservice.Application;
 using UserMicroservice.Domain.Entities;
 using UserMicroservice.Infrastructure;
 
@@ -19,19 +19,31 @@ public class ProviderStateMiddleware
 
     private readonly IDictionary<string, Func<IDictionary<string, object>, HttpContext, Task>> _providerStates;
     private readonly RequestDelegate _next;
-    private readonly IUserRepository _users;
+    private readonly IUserRepository _userRepository;
 
     /// <summary>
     /// Initialises a new instance of the <see cref="ProviderStateMiddleware"/> class.
     /// </summary>
     /// <param name="next">Next request delegate</param>
-    public ProviderStateMiddleware(RequestDelegate next)
+    public ProviderStateMiddleware(RequestDelegate next, IUserRepository userRepository)
     {
         _next = next;
+        _userRepository = userRepository;
 
         _providerStates = new Dictionary<string, Func<IDictionary<string, object>, HttpContext, Task>>
         {
-            ["a user with id {id} exists"] = EnsureEventExistsAsync
+            ["a user with id {id} exists"] = EnsureEventExistsAsync,
+            ["a user with id {id} does not exist"] = async (parameters, httpContext) =>
+            {
+                var id = parameters["id"].ToString();
+                var user = await userRepository.GetUserByIdAsync(Guid.Parse(id));
+                if (user == null)
+                {
+                    return;
+                }
+
+                await userRepository.DeleteUserAsync(user);
+            }
         };
     }
 
@@ -43,17 +55,19 @@ public class ProviderStateMiddleware
     /// <returns>Awaitable</returns>
     private async Task EnsureEventExistsAsync(IDictionary<string, object> parameters, HttpContext httpContext)
     {
-        var id = (JsonElement)parameters["id"];
-        var userRepository = httpContext.RequestServices.GetRequiredService<IUserRepository>();
-        
-        await userRepository.CreateUserAsync(new UserEntity
+        var id =  Guid.Parse(parameters["id"].ToString());
+        var existingUser = await _userRepository.GetUserByIdAsync(id);
+        if (existingUser == null)
         {
-            Id = Guid.Parse(id.ToString()),
-            Email = "test@example.com",
-            Nickname = "Bobby",
-            CreatedAt = new DateTime(2009, 7, 27, 0, 0, 0),
-            Password = "password"
-        });
+            await _userRepository.CreateUserAsync(new UserEntity
+            {
+                Id = id,
+                Email = "test@example.com",
+                Nickname = "Bobby",
+                CreatedAt = new DateTime(2009, 7, 27, 0, 0, 0),
+                Password = "password"
+            });
+        }
     }
 
     /// <summary>
@@ -86,8 +100,9 @@ public class ProviderStateMiddleware
 
                 if (!string.IsNullOrEmpty(providerState?.State))
                 {
+                    var paramDictionary = providerState.Params.ToDictionary(kvp => kvp.Key, kvp => (object)kvp.Value);
                     await _providerStates[providerState.State].Invoke(
-                        providerState.Params.ToDictionary(kvp => kvp.Key, object (kvp) => kvp.Value),
+                        paramDictionary,
                         context
                     );
                 }
