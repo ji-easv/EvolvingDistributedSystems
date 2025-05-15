@@ -37,9 +37,9 @@ jobs:
           
       - name: Run consumer contract tests and generate contract
         run: |
-          dotnet restore
           echo "Generating Consumer Contract..."
           cd ${{ inputs.base-dir }}
+          dotnet restore
           dotnet test
           
       - name: Compare contract files
