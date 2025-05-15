@@ -13,7 +13,7 @@ on:
 
 jobs:
     check-consumer-contract:
-      runs-on: ubuntu-latest
+      runs-on: ubuntu-24.04
       steps:
       - name: Checkout head branch
         uses: actions/checkout@v4
@@ -26,6 +26,7 @@ jobs:
       - name: Install .NET (requires x64 version)
         run: |
           echo "Installing .NET..."
+          sudo add-apt-repository ppa:dotnet/backports 
           sudo apt-get update && sudo apt-get install -y dotnet-sdk-9.0
 
       - name: Backup existing contract file
