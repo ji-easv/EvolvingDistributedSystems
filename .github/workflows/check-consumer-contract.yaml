@@ -18,22 +18,22 @@ jobs:
       - name: Checkout head branch
         uses: actions/checkout@v4
 
-#      - name: Set up .NET (requires x64 architecture)
-#        uses: actions/setup-dotnet@v3
-#        with:
-#          dotnet-version: '9.0.x'
+      - name: Set up .NET (requires x64 architecture)
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
           
-      - name: Install .NET (requires x64 version)
-        run: |
-          echo "Installing .NET..."
-          sudo add-apt-repository ppa:dotnet/backports 
-          sudo apt-get update && sudo apt-get install -y dotnet-sdk-9.0
+#      - name: Install .NET (requires x64 version)
+#        run: |
+#          echo "Installing .NET..."
+#          sudo add-apt-repository ppa:dotnet/backports 
+#          sudo apt-get update && sudo apt-get install -y dotnet-sdk-9.0
 
       - name: Backup existing contract file
         run: |
           echo "Backing up the existing contract file..."
           cd ${{ inputs.base-dir }}/pacts
-          mv ${{ inputs.contract-file }} ${{ inputs.contract-file }}.current
+          mv ${{ inputs.contract-file }} current-${{ inputs.contract-file }}
           
       - name: Run consumer contract tests and generate contract
         run: |
@@ -46,7 +46,7 @@ jobs:
         run: |
           echo "Comparing contract files..."
           cd ${{ inputs.base-dir }}/pacts
-          if diff ${{ inputs.contract-file }} ${{ inputs.contract-file }}.current; then
+          if diff ${{ inputs.contract-file }} current-${{ inputs.contract-file }}; then
             echo "No uncomitted changes detected in the contract file."
           else
             echo "Uncommitted changes detected in the contract file! Please update the contract file by running the command 'dotnet test' in the pacts directory, and commit the changes."
