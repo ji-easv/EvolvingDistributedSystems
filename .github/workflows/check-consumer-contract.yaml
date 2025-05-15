@@ -22,12 +22,6 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '9.0.x'
-          
-#      - name: Install .NET (requires x64 version)
-#        run: |
-#          echo "Installing .NET..."
-#          sudo add-apt-repository ppa:dotnet/backports 
-#          sudo apt-get update && sudo apt-get install -y dotnet-sdk-9.0
 
       - name: Backup existing contract file
         run: |
@@ -41,6 +35,11 @@ jobs:
           cd ${{ inputs.base-dir }}
           dotnet restore
           dotnet test
+
+      - name: Debug pacts directory
+        run: |
+          echo "Listing contents of pacts directory..."
+          ls -la GroupMicroservice.Tests/pacts
           
       - name: Compare contract files
         run: |
