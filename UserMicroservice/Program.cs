@@ -1,56 +1,25 @@
 using Asp.Versioning;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi;
-using UserMicroservice.Infrastructure;
+using UserMicroservice;
 using UserMicroservice.Presentation;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    var connectionString = builder.Configuration.GetConnectionString("UserDb");
-    options.UseNpgsql(connectionString);
-});
-
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi(options =>
-{
-    options.OpenApiVersion = OpenApiSpecVersion.OpenApi3_0;
-});
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddScoped<UserRepository>();
-builder.Services.AddProblemDetails();
-
-builder.Services.AddApiVersioning(options =>
-{
-    options.DefaultApiVersion = new ApiVersion(1);
-    options.ReportApiVersions = true;
-    options.AssumeDefaultVersionWhenUnspecified = true;
-    options.ApiVersionReader = new UrlSegmentApiVersionReader();
-}).AddApiExplorer(config =>
-{
-    config.GroupNameFormat = "'v'V";
-    config.SubstituteApiVersionInUrl = true;
-});
+var startup = new Startup(builder.Configuration);
+startup.ConfigureServices(builder.Services);
 
 var app = builder.Build();
+startup.Configure(app, app.Environment);
 
 var apiVersionSet = app.NewApiVersionSet()
     .HasApiVersion(new ApiVersion(1))
     .ReportApiVersions()
     .Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseHttpsRedirection();
 
 app.AddUserApi()
     .WithApiVersionSet(apiVersionSet)

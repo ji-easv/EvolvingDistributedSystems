@@ -1,6 +1,6 @@
 ﻿namespace GroupMicroservice.Infrastructure;
 
-public class GroupRepository : IGroupRepository
+public interface IGroupRepository
 {
     
 }

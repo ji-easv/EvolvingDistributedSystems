@@ -3,7 +3,7 @@ using UserMicroservice.Domain.Entities;
 
 namespace UserMicroservice.Infrastructure;
 
-public class UserRepository(AppDbContext context)
+public class UserRepository(AppDbContext context) : IUserRepository
 {
     public async Task<UserEntity?> GetUserByIdAsync(Guid id)
     {
