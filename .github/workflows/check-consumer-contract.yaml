@@ -18,10 +18,15 @@ jobs:
       - name: Checkout head branch
         uses: actions/checkout@v4
 
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '9.0.x'
+#      - name: Set up .NET (requires x64 architecture)
+#        uses: actions/setup-dotnet@v3
+#        with:
+#          dotnet-version: '9.0.x'
+          
+      - Name: Install .NET (requires x64 version)
+        run: |
+          echo "Installing .NET..."
+          sudo apt-get update && sudo apt-get install -y dotnet-sdk-9.0
 
       - name: Backup existing contract file
         run: |
@@ -29,8 +34,9 @@ jobs:
           cd ${{ inputs.base-dir }}/pacts
           mv ${{ inputs.contract-file }} ${{ inputs.contract-file }}.current
           
-      - name: Generate Consumer Contract
+      - name: Run consumer contract tests and generate contract
         run: |
+          dotnet restore
           echo "Generating Consumer Contract..."
           cd ${{ inputs.base-dir }}
           dotnet test
