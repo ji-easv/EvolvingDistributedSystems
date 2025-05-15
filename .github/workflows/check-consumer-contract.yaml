@@ -23,7 +23,7 @@ jobs:
 #        with:
 #          dotnet-version: '9.0.x'
           
-      - Name: Install .NET (requires x64 version)
+      - name: Install .NET (requires x64 version)
         run: |
           echo "Installing .NET..."
           sudo apt-get update && sudo apt-get install -y dotnet-sdk-9.0
