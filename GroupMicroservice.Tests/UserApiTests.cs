@@ -40,7 +40,8 @@ public class UserApiTests
     [Fact]
     public async Task GetUserAsync_WhenCalled_ReturnsGetUserDto()
     {
-        var id = Guid.Parse("03247A5F-B7C9-4B88-8A6B-A3B583594EFD");
+        // var id = Guid.Parse("03247A5F-B7C9-4B88-8A6B-A3B583594EFD");
+        var id = Guid.NewGuid();
 
         var expectedUser = new GetUserDto
         {
