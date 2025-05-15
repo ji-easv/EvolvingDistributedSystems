@@ -22,7 +22,7 @@ public class UserApiTests
 
         var config = new PactConfig
         {
-            PactDir = $"{Directory.GetParent(Directory.GetCurrentDirectory())!.Parent!.Parent!.Parent!.FullName}{Path.DirectorySeparatorChar}pacts",
+            PactDir = $"{Directory.GetParent(Directory.GetCurrentDirectory())!.Parent!.Parent!.FullName}{Path.DirectorySeparatorChar}pacts",
             Outputters =
             [
                 new XunitOutput(output)
