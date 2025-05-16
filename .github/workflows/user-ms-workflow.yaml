@@ -40,10 +40,6 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '9.0.x'
-          
-      - name: Set Pact environment variables
-        run: |
-          echo "PACT_PUBLISH_VERIFICATION_RESULTS=true" >> $GITHUB_ENV
 
       - name: Verify consumer contract against provider
         run: |
@@ -51,6 +47,9 @@ jobs:
           cd UserMicroservice.Tests
           dotnet restore
           
+          PACT_PUBLISH_VERIFICATION_RESULTS=true \
+          GIT_SHA=${{ github.sha }} \
+          GIT_BRANCH=${{ github.ref_name }} \
           PactBroker__PactBrokerUri=${{ secrets.PACT_BROKER }} \
           PactBroker__PactBrokerUsername=${{ secrets.PACT_BROKER_USERNAME }} \
           PactBroker__PactBrokerPassword=${{ secrets.PACT_BROKER_PASSWORD }} \
