@@ -16,5 +16,5 @@ jobs:
 
   group-ms-workflow:
     name: Full Group Microservice Workflow
-    uses: ji-easv/EvolvingDistributedSystems/.github/workflows/group-ms-workflow.yaml
+    uses: ji-easv/EvolvingDistributedSystems/.github/workflows/group-ms-workflow.yaml@main
     secrets: inherit
