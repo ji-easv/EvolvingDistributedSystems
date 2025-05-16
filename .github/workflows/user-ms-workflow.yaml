@@ -28,10 +28,7 @@ jobs:
   
   verify-contract:
     runs-on: ubuntu-latest
-    env:
-      PROVIDER_NAME: UserMicroservice
-      CONSUMER_NAME: GroupMicroservice
-    
+    needs: check-user-schema
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
