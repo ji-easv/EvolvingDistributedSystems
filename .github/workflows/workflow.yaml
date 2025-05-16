@@ -23,7 +23,12 @@ jobs:
     needs:
       - user-ms-workflow
       - group-ms-workflow
+    env:
+      CONTRACT_FILE: GroupMicroservice.Tests/pacts/GroupMicroservice-UserMicroservice.json
     steps:
+      - name: Checkout head branch
+        uses: actions/checkout@v4
+      
       - name: Install Pact Broker CLI
         run: |
           echo "Installing Pact Broker CLI..."
@@ -32,8 +37,7 @@ jobs:
       - name: Publish consumer contract
         run: |
           echo "Publishing consumer contract..."
-          cd ${{ inputs.base-dir }}/pacts
-           pact-broker publish ${{ inputs.contract-file }} \
+           pact-broker publish ${{ env.CONTRACT_FILE }} \
             --broker-base-url=${{ secrets.PACT_BROKER }} \
             --broker-username=${{ secrets.PACT_BROKER_USERNAME }} \
             --broker-password=${{ secrets.PACT_BROKER_PASSWORD }} \
