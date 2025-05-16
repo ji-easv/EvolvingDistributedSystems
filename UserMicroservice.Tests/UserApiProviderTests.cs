@@ -38,7 +38,18 @@ public class UserApiProviderTests(
                 {
                     var version = Environment.GetEnvironmentVariable("GIT_SHA");
                     var branch = Environment.GetEnvironmentVariable("GIT_BRANCH");
-                    configure.PublishResults(version, publish => publish.ProviderBranch(branch));
+                    var providerTags = Environment.GetEnvironmentVariable("PROVIDER_TAGS")?.Split(",") ?? [] ;
+                    var consumerTags = Environment.GetEnvironmentVariable("CONSUMER_TAGS")?.Split(",") ?? [] ;
+                   
+                    // Fetch pacts with relevant tags (e.g. "main", "main,feature/feature-1")
+                    configure.ConsumerTags(consumerTags);
+                    
+                    // Publish results
+                    configure.PublishResults(version, publish =>
+                    {
+                        publish.ProviderBranch(branch);
+                        publish.ProviderTags(providerTags);
+                    });
                 }
             })
             .WithProviderStateUrl(new Uri(userApiFixture.ServerUri, "/provider-states"))
