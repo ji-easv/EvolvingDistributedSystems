@@ -1,10 +1,6 @@
 name: Group Microservice CI
 
 on:
-  pull_request:
-    paths:
-      - 'GroupMicroservice/**'
-      - 'GroupMicroservice.Tests/**'
   workflow_call:
     secrets:
       PACT_BROKER:

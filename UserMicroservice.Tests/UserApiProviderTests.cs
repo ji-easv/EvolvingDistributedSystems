@@ -38,7 +38,13 @@ public class UserApiProviderTests(
                 {
                     var version = Environment.GetEnvironmentVariable("GIT_SHA");
                     var branch = Environment.GetEnvironmentVariable("GIT_BRANCH");
-                    configure.PublishResults(version, publish => publish.ProviderBranch(branch));
+                    var tags = Environment.GetEnvironmentVariable("GIT_TAGS").Split(",");
+                    
+                    configure.PublishResults(version, publish =>
+                    {
+                        publish.ProviderBranch(branch);
+                        publish.ProviderTags(tags);
+                    });
                 }
             })
             .WithProviderStateUrl(new Uri(userApiFixture.ServerUri, "/provider-states"))
