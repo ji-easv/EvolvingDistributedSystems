@@ -40,6 +40,26 @@ jobs:
           echo "Installing Pact Broker CLI..."
           curl -fsSL https://raw.githubusercontent.com/pact-foundation/pact-ruby-standalone/master/install.sh | PACT_CLI_VERSION=v2.4.24 bash
 
+      - name: Debug secrets
+        run: |
+          if [ -z "${{ secrets.PACT_BROKER }}" ]; then
+            echo "PACT_BROKER is empty"
+          else
+            echo "PACT_BROKER is set"
+          fi
+          
+          if [ -z "${{ secrets.PACT_BROKER_USERNAME }}" ]; then
+            echo "PACT_BROKER_USERNAME is empty"
+          else
+            echo "PACT_BROKER_USERNAME is set"
+          fi
+          
+          if [ -z "${{ secrets.PACT_BROKER_PASSWORD }}" ]; then
+            echo "PACT_BROKER_PASSWORD is empty"
+          else
+            echo "PACT_BROKER_PASSWORD is set"
+          fi
+          
       - name: Publish consumer contract
         run: |
           echo "Publishing consumer contract..."
