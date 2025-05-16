@@ -83,6 +83,11 @@ public class ProviderStateMiddleware
             return;
         }
 
+        await HandleProviderStatesRequest(context);
+    }
+    
+    private async Task HandleProviderStatesRequest(HttpContext context)
+    {
         context.Response.StatusCode = StatusCodes.Status200OK;
 
         if (context.Request.Method == HttpMethod.Post.ToString())

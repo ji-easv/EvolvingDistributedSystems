@@ -15,7 +15,7 @@ public class Startup(IConfiguration configuration)
     {
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
-        
+
         services.AddDbContext<AppDbContext>(options =>
         {
             var connectionString = configuration.GetConnectionString("UserDb");
@@ -26,12 +26,10 @@ public class Startup(IConfiguration configuration)
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         services.AddOpenApi(options => { options.OpenApiVersion = OpenApiSpecVersion.OpenApi3_0; });
         services.AddSwaggerGen();
-
-        /* TODO: uncomment
-         services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IUserService, UserService>();*/ 
-        services.AddProblemDetails();
-
+        
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUserService, UserService>();
+        
         services.AddApiVersioning(options =>
         {
             options.DefaultApiVersion = new ApiVersion(1);
@@ -44,32 +42,36 @@ public class Startup(IConfiguration configuration)
             config.SubstituteApiVersionInUrl = true;
         });
     }
-    
+
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         // Configure the HTTP request pipeline.
         app.UseHttpsRedirection();
-
-        if (app is WebApplication webApplication)
+        app.UseExceptionHandler();
+        app.UseRouting();
+        
+        app.UseEndpoints(endpoints =>
         {
-            var apiVersionSet = webApplication.NewApiVersionSet()
+            var apiVersionSet = endpoints.NewApiVersionSet()
                 .HasApiVersion(new ApiVersion(1))
                 .ReportApiVersions()
                 .Build();
             
-            webApplication.AddUserApi()
+            endpoints.AddUserApi()
                 .WithApiVersionSet(apiVersionSet)
                 .MapToApiVersion(1);
             
             if (env.IsDevelopment())
             {
-                webApplication.MapOpenApi();
-                webApplication.UseSwagger();
-                webApplication.UseSwaggerUI();
+                endpoints.MapOpenApi();
             }
-        }
+        });
 
-        app.UseExceptionHandler();
+        if (env.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
     }
 }

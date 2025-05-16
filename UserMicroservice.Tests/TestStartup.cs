@@ -11,14 +11,13 @@ public class TestStartup(IConfiguration configuration)
     {
         _inner.ConfigureServices(services);
         
-        services.AddScoped<IUserService, UserService>();
         services.AddSingleton<IUserRepository, MockUserRepository>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        app.UseMiddleware<ProviderStateMiddleware>();
-        
         _inner.Configure(app, env);
+        
+        app.UseMiddleware<ProviderStateMiddleware>();
     }
 }
