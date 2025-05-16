@@ -10,6 +10,6 @@ on:
 jobs:
   check-user-schema:
     name: Check User Microservice Schema diff
-    uses: ./.github/workflows/check-schema.yaml
+    uses: ./.github/workflows/composites/check-schema.yaml
     with:
       service-name: UserMicroservice
