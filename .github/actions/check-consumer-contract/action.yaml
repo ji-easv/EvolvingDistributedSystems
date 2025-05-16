@@ -21,12 +21,14 @@ runs:
         dotnet-version: '9.0.x'
 
     - name: Backup existing contract file
+      shell: bash
       run: |
         echo "Backing up the existing contract file..."
         cd ${{ inputs.base-dir }}/pacts
         mv ${{ inputs.contract-file }} current-${{ inputs.contract-file }}
 
     - name: Run consumer contract tests and generate contract
+      shell: bash
       run: |
         echo "Generating Consumer Contract..."
         cd ${{ inputs.base-dir }}
@@ -34,6 +36,7 @@ runs:
         dotnet test
 
     - name: Compare contract files
+      shell: bash
       run: |
         echo "Comparing contract files..."
         cd ${{ inputs.base-dir }}/pacts

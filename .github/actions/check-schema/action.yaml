@@ -24,10 +24,12 @@ runs:
         dotnet-version: '9.0.x'
 
     - name: Build and generate OpenAPI schema
+      shell: bash
       run: |
         dotnet build head/${{ inputs.service-name }}/${{ inputs.service-name }}.csproj
 
     - name: Compare schemas
+      shell: bash
       run: |
         echo "Comparing OpenAPI schemas..."
         docker run --rm \
