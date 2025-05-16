@@ -11,6 +11,9 @@ jobs:
   check-user-schema:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
       - name: Check User Microservice Schema diff    
         uses: ./.github/actions/check-schema
         with:
