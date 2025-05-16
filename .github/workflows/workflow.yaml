@@ -11,10 +11,10 @@ on:
 jobs:
   user-ms-workflow:
     name: Full User Microservice Workflow
-    uses: ./.github/workflows/user-ms-workflow.yaml
+    uses: ji-easv/EvolvingDistributedSystems/.github/workflows/user-ms-workflow.yaml@main
     secrets: inherit
 
   group-ms-workflow:
     name: Full Group Microservice Workflow
-    uses: ./.github/workflows/group-ms-workflow.yaml
+    uses: ji-easv/EvolvingDistributedSystems/.github/workflows/group-ms-workflow.yaml
     secrets: inherit
