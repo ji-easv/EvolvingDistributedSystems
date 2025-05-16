@@ -1,7 +1,7 @@
 ﻿using UserMicroservice.Domain.Entities;
 using UserMicroservice.Infrastructure;
 
-namespace UserMicroservice.Tests;
+namespace UserMicroservice.Tests.Setup;
 
 public class MockUserRepository : IUserRepository
 {

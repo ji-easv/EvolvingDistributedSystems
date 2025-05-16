@@ -19,8 +19,12 @@ jobs:
         with:
           service-name: GroupMicroservice
   
-  check-consumer-contract:
+  consumer-contract-action:
     runs-on: ubuntu-latest
+    env:
+      BASE_DIR: GroupMicroservice.Tests
+      CONTRACT_FILE: GroupMicroservice-UserMicroservice.json
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -28,5 +32,30 @@ jobs:
       - name: Check Group Microservice Consumer contract
         uses: ./.github/actions/check-consumer-contract
         with:
-          base-dir: GroupMicroservice.Tests
-          contract-file: GroupMicroservice-UserMicroservice.json
+          base-dir: ${{ env.BASE_DIR }}
+          contract-file: ${{ env.CONTRACT_FILE }}
+
+      - name: Install Pact Broker CLI
+        run: |
+          echo "Installing Pact Broker CLI..."
+          curl -fsSL https://raw.githubusercontent.com/pact-foundation/pact-ruby-standalone/master/install.sh | PACT_CLI_VERSION=v2.4.24 bash
+
+      - name: Publish consumer contract
+        run: |
+          echo "Publishing consumer contract..."
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            pact-broker publish ${{ env.BASE_DIR }}/${{ env.CONTRACT_FILE }} \
+              --broker-base-url=${{ secrets.PACT_BROKER }} \
+              --broker-username=${{ secrets.PACT_BROKER_USERNAME }} \
+              --broker-password=${{ secrets.PACT_BROKER_PASSWORD }} \
+              --consumer-app-version=${{ github.sha }} \
+              --tag-with-git-branch \
+              --tag=latest
+          else
+            pact-broker publish ${{ env.BASE_DIR }}/${{ env.CONTRACT_FILE }} \
+              --broker-base-url=${{ secrets.PACT_BROKER }} \
+              --broker-username=${{ secrets.PACT_BROKER_USERNAME }} \
+              --broker-password=${{ secrets.PACT_BROKER_PASSWORD }} \
+              --consumer-app-version=${{ github.sha }} \
+              --tag-with-git-branch
+          fi

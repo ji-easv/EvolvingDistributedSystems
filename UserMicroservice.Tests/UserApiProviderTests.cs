@@ -1,12 +1,17 @@
-﻿using PactNet;
+﻿using Microsoft.Extensions.Options;
+using PactNet;
 using PactNet.Infrastructure.Outputters;
 using PactNet.Output.Xunit;
 using PactNet.Verifier;
+using UserMicroservice.Tests.Setup;
 using Xunit.Abstractions;
 
 namespace UserMicroservice.Tests;
 
-public class UserApiProviderTests(UserApiFixture userApiFixture, ITestOutputHelper output) : IClassFixture<UserApiFixture>
+public class UserApiProviderTests(
+    UserApiFixture userApiFixture, 
+    ITestOutputHelper output
+    ) : IClassFixture<UserApiFixture>
 {
     private readonly PactVerifier _pactVerifier = new("UserMicroservice", new PactVerifierConfig
     {
@@ -24,15 +29,12 @@ public class UserApiProviderTests(UserApiFixture userApiFixture, ITestOutputHelp
     [Fact]
     public void EnsureUserMsHonoursPactWithGroupMsConsumer()
     {
-        // Arrange
-        var pactDir =
-            $"{Directory.GetParent(Directory.GetCurrentDirectory())!.Parent!.Parent!.FullName}{Path.DirectorySeparatorChar}pacts";
-        var pactFile = Path.Combine(pactDir, "GroupMicroservice-UserMicroservice.json");
-
-        // Act / Assert
         _pactVerifier
             .WithHttpEndpoint(userApiFixture.ServerUri)
-            .WithFileSource(new FileInfo(pactFile))
+            .WithPactBrokerSource(new Uri(userApiFixture.Options.PactBrokerUri), configure =>
+            {
+                configure.BasicAuthentication(userApiFixture.Options.PactBrokerUsername, userApiFixture.Options.PactBrokerPassword);
+            })
             .WithProviderStateUrl(new Uri(userApiFixture.ServerUri, "/provider-states"))
             .Verify();
     }

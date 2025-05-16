@@ -1,11 +1,10 @@
 ﻿using System.Text;
 using System.Text.Json;
 using PactNet;
-using UserMicroservice.Application;
 using UserMicroservice.Domain.Entities;
 using UserMicroservice.Infrastructure;
 
-namespace UserMicroservice.Tests;
+namespace UserMicroservice.Tests.Setup;
 
 /// <summary>
 /// Middleware for handling provider state requests

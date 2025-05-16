@@ -1,7 +1,6 @@
-﻿using UserMicroservice.Application;
-using UserMicroservice.Infrastructure;
+﻿using UserMicroservice.Infrastructure;
 
-namespace UserMicroservice.Tests;
+namespace UserMicroservice.Tests.Setup;
 
 public class TestStartup(IConfiguration configuration)
 {
@@ -17,7 +16,7 @@ public class TestStartup(IConfiguration configuration)
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         _inner.Configure(app, env);
-        
+
         app.UseMiddleware<ProviderStateMiddleware>();
     }
 }

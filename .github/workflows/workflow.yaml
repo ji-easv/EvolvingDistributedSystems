@@ -16,31 +16,3 @@ jobs:
   group-ms-workflow:
     name: Full Group Microservice Workflow
     uses: ./.github/workflows/group-ms-workflow.yaml
-  
-  publish-consumer-contract:
-    runs-on: ubuntu-24.04
-    name: Publish Consumer Contract
-    needs:
-      - user-ms-workflow
-      - group-ms-workflow
-    env:
-      CONTRACT_FILE: GroupMicroservice.Tests/pacts/GroupMicroservice-UserMicroservice.json
-    steps:
-      - name: Checkout head branch
-        uses: actions/checkout@v4
-      
-      - name: Install Pact Broker CLI
-        run: |
-          echo "Installing Pact Broker CLI..."
-          curl -fsSL https://raw.githubusercontent.com/pact-foundation/pact-ruby-standalone/master/install.sh | PACT_CLI_VERSION=v2.4.24 bash
-  
-      - name: Publish consumer contract
-        run: |
-          echo "Publishing consumer contract..."
-           pact-broker publish ${{ env.CONTRACT_FILE }} \
-            --broker-base-url=${{ secrets.PACT_BROKER }} \
-            --broker-username=${{ secrets.PACT_BROKER_USERNAME }} \
-            --broker-password=${{ secrets.PACT_BROKER_PASSWORD }} \
-            --consumer-app-version=${{ github.sha }} \
-            --tag=latest \
-            --tag-with-git-branch
