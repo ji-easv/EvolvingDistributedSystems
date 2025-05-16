@@ -12,6 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check User Microservice Schema diff    
-        uses: ./.github/actions/check-schema.yaml
+        uses: ./.github/actions/check-schema
         with:
           service-name: UserMicroservice
