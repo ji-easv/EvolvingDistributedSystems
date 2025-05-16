@@ -9,7 +9,9 @@ on:
 
 jobs:
   check-user-schema:
-    name: Check User Microservice Schema diff
-    uses: ./.github/workflows/composites/check-schema.yaml
-    with:
-      service-name: UserMicroservice
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check User Microservice Schema diff    
+        uses: ./.github/actions/check-schema.yaml
+        with:
+          service-name: UserMicroservice

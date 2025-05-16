@@ -9,14 +9,18 @@ on:
 
 jobs:
   check-user-schema:
-    name: Check Group Microservice Schema diff
-    uses: ./.github/workflows/check-schema.yaml
-    with:
-      service-name: GroupMicroservice
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Group Microservice Schema diff
+        uses: ./.github/actions/check-schema.yaml
+        with:
+          service-name: GroupMicroservice
   
   check-consumer-contract:
-    name: Check Group Microservice Consumer contract
-    uses: ./.github/workflows/check-consumer-contract.yaml
-    with:
-      base-dir: GroupMicroservice.Tests
-      contract-file: GroupMicroservice-UserMicroservice.json
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Group Microservice Consumer contract
+        uses: ./.github/actions/check-consumer-contract.yaml
+        with:
+          base-dir: GroupMicroservice.Tests
+          contract-file: GroupMicroservice-UserMicroservice.json

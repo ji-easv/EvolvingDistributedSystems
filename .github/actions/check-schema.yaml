@@ -1,0 +1,39 @@
+name: Check OpenAPI Schema
+
+inputs:
+  service-name:
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout head branch
+      uses: actions/checkout@v4
+      with:
+        path: head
+
+    - name: Checkout base branch
+      uses: actions/checkout@v4
+      with:
+        path: main
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Build and generate OpenAPI schema
+      run: |
+        dotnet build head/${{ inputs.service-name }}/${{ inputs.service-name }}.csproj
+
+    - name: Compare schemas
+      run: |
+        echo "Comparing OpenAPI schemas..."
+        docker run --rm \
+        -v ${{ github.workspace }}/main/${{ inputs.service-name }}:/main \
+        -v ${{ github.workspace }}/head/${{ inputs.service-name }}:/head \
+        openapitools/openapi-diff:latest \
+        --fail-on-incompatible \
+        /main/openapi-schema.json \
+        /head/openapi-schema.json
