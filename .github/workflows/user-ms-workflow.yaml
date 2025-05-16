@@ -42,7 +42,7 @@ jobs:
           
           PACT_PUBLISH_VERIFICATION_RESULTS=true \
           GIT_SHA=${{ github.sha }} \
-          GIT_BRANCH=${{ github.ref_name }} \
+          GIT_BRANCH=${{ github.head_ref || github.ref_name }} \
           PROVIDER_TAGS=$(if [ "${{ github.head_ref || github.ref_name }}" = "main" ]; then echo "main,latest"; else echo "${{ github.head_ref || github.ref_name }}"; fi) \
           CONSUMER_TAGS=$(if [ "${{ github.head_ref || github.ref_name }}" = "main" ]; then echo "latest"; else echo "${{ github.head_ref || github.ref_name }}"; fi) \
           PactBroker__PactBrokerUri=${{ secrets.PACT_BROKER }} \
