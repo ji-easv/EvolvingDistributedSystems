@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using PactNet;
+﻿using PactNet;
 using PactNet.Infrastructure.Outputters;
 using PactNet.Output.Xunit;
 using PactNet.Verifier;
