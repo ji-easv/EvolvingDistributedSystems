@@ -48,7 +48,6 @@ public class UserApiTests
             Email = "test@example.com",
             Nickname = "Bobby",
             CreatedAt = new DateTime(2009, 7, 27, 0, 0, 0),
-            ProfilePicture = "test.png",
         };
         
         // Arrange

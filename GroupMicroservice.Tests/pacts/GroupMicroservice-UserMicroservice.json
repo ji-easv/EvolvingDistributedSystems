@@ -55,7 +55,6 @@
             "email": "test@example.com",
             "id": "03247a5f-b7c9-4b88-8a6b-a3b583594efd",
             "nickname": "Bobby",
-            "profilePicture": "test.png",
             "updatedAt": null
           },
           "contentType": "application/json",
