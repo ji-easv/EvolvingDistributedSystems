@@ -6,6 +6,13 @@ on:
       - 'UserMicroservice/**'
       - 'UserMicroservice.Tests/**'
   workflow_call:
+    secrets:
+      PACT_BROKER:
+        required: true
+      PACT_BROKER_USERNAME:
+        required: true
+      PACT_BROKER_PASSWORD:
+        required: true
 
 jobs:
   check-user-schema:
@@ -13,8 +20,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
-      - name: Check User Microservice Schema diff    
+
+      - name: Check User Microservice Schema diff
         uses: ./.github/actions/check-schema
         with:
           service-name: UserMicroservice
