@@ -28,6 +28,7 @@ jobs:
       
       - name: Check Group Microservice Consumer contract
         uses: ./.github/actions/check-consumer-contract
+        secrets: inherit
         with:
           base-dir: GroupMicroservice.Tests
           contract-file: GroupMicroservice-UserMicroservice.json
