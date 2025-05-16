@@ -21,9 +21,13 @@ jobs:
   
   consumer-contract-action:
     runs-on: ubuntu-latest
+    needs: check-user-schema
     env:
       BASE_DIR: GroupMicroservice.Tests
       CONTRACT_FILE: GroupMicroservice-UserMicroservice.json
+      PACT_BROKER: ${{ secrets.PACT_BROKER }}
+      PACT_BROKER_USERNAME: ${{ secrets.PACT_BROKER_USERNAME }}
+      PACT_BROKER_PASSWORD: ${{ secrets.PACT_BROKER_PASSWORD }}
     
     steps:
       - name: Checkout code
@@ -42,19 +46,19 @@ jobs:
 
       - name: Debug secrets
         run: |
-          if [ -z "${{ secrets.PACT_BROKER }}" ]; then
+          if [ -z "$PACT_BROKER" ]; then
             echo "PACT_BROKER is empty"
           else
             echo "PACT_BROKER is set"
           fi
-          
-          if [ -z "${{ secrets.PACT_BROKER_USERNAME }}" ]; then
+
+          if [ -z "$PACT_BROKER_USERNAME" ]; then
             echo "PACT_BROKER_USERNAME is empty"
           else
             echo "PACT_BROKER_USERNAME is set"
           fi
-          
-          if [ -z "${{ secrets.PACT_BROKER_PASSWORD }}" ]; then
+
+          if [ -z "$PACT_BROKER_PASSWORD" ]; then
             echo "PACT_BROKER_PASSWORD is empty"
           else
             echo "PACT_BROKER_PASSWORD is set"
@@ -66,17 +70,17 @@ jobs:
           cd ${{ env.BASE_DIR }}/pacts
           if [ "${{ github.ref }}" == "refs/heads/main" ]; then
             pact-broker publish ${{ env.CONTRACT_FILE }} \
-              --broker-base-url=${{ secrets.PACT_BROKER }} \
-              --broker-username=${{ secrets.PACT_BROKER_USERNAME }} \
-              --broker-password=${{ secrets.PACT_BROKER_PASSWORD }} \
+              --broker-base-url=$PACT_BROKER \
+              --broker-username=$PACT_BROKER_USERNAME \
+              --broker-password=$PACT_BROKER_PASSWORD \
               --consumer-app-version=${{ github.sha }} \
               --tag-with-git-branch \
               --tag=latest
           else
             pact-broker publish ${{ env.CONTRACT_FILE }} \
-              --broker-base-url=${{ secrets.PACT_BROKER }} \
-              --broker-username=${{ secrets.PACT_BROKER_USERNAME }} \
-              --broker-password=${{ secrets.PACT_BROKER_PASSWORD }} \
+              --broker-base-url=$PACT_BROKER \
+              --broker-username=$PACT_BROKER_USERNAME \
+              --broker-password=$PACT_BROKER_PASSWORD \
               --consumer-app-version=${{ github.sha }} \
               --tag-with-git-branch
           fi
