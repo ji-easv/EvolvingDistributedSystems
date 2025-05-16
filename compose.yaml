@@ -28,3 +28,26 @@
       POSTGRES_DB: user_db
     ports:
       - "5433:5432"
+    
+  pact-broker:
+    image: pactfoundation/pact-broker:latest
+    environment:
+      PACT_BROKER_DATABASE_ADAPTER: postgres
+      PACT_BROKER_DATABASE_USERNAME: postgres
+      PACT_BROKER_DATABASE_PASSWORD: postgres
+      PACT_BROKER_DATABASE_HOST: pact-db
+      PACT_BROKER_DATABASE_NAME: pact_broker
+      PACT_BROKER_BASIC_AUTH_USERNAME: pact-broker
+      PACT_BROKER_BASIC_AUTH_PASSWORD: pact-broker
+      PACT_BROKER_PORT: 9292
+    ports:
+      - "9292:9292"
+    
+  pact-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pact_broker
+    ports:
+      - "5434:5432"
