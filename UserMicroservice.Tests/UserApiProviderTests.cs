@@ -22,7 +22,7 @@ public class UserApiProviderTests(
             // sample creates a custom xUnit outputter. You will
             // have to do the same in xUnit projects.
             new XunitOutput(output)
-        }
+        },
     });
     
     [Fact]
@@ -33,6 +33,13 @@ public class UserApiProviderTests(
             .WithPactBrokerSource(new Uri(userApiFixture.Options.PactBrokerUri), configure =>
             {
                 configure.BasicAuthentication(userApiFixture.Options.PactBrokerUsername, userApiFixture.Options.PactBrokerPassword);
+                
+                if (Environment.GetEnvironmentVariable("PACT_PUBLISH_VERIFICATION_RESULTS") == "true") // Only publish results on CI/CD
+                {
+                    var version = Environment.GetEnvironmentVariable("GIT_SHA");
+                    var branch = Environment.GetEnvironmentVariable("GIT_BRANCH");
+                    configure.PublishResults(version, publish => publish.ProviderBranch(branch));
+                }
             })
             .WithProviderStateUrl(new Uri(userApiFixture.ServerUri, "/provider-states"))
             .Verify();
