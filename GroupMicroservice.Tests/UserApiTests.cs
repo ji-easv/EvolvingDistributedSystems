@@ -52,11 +52,11 @@ public class UserApiTests
         
         // Arrange
         _pact.UponReceiving("A valid request for a single user by ID")
-                .Given($"a user with id {id} exists", new Dictionary<string, string> { ["id"] = id.ToString() })
+                .Given("a user with id {id} exists", new Dictionary<string, string> { ["id"] = id.ToString() })
                 .WithRequest(HttpMethod.Get, $"/api/v1/user/{id}")
+                .WithHeader("Accept", "application/json")
             .WillRespond()
                 .WithStatus(HttpStatusCode.OK)
-                .WithHeader("Content-Type", "application/json; charset=utf-8")
                 .WithJsonBody(expectedUser);
 
         await _pact.VerifyAsync(async ctx => {
@@ -83,12 +83,12 @@ public class UserApiTests
         var id = Guid.Parse("DF721117-36AB-4B87-A9EC-2319A56F53C9");
 
         // Arrange
-        _pact.UponReceiving("A valid request for a single user by ID")
-                .Given($"a user with id {id} does not exist", new Dictionary<string, string> { ["id"] = id.ToString() })
-                .WithRequest(HttpMethod.Get, $"/api/v1/user/{id}")
+        _pact.UponReceiving("A request for a single user by ID that does not exist")
+            .Given("a user with id {id} does not exist", new Dictionary<string, string> { ["id"] = id.ToString() })
+            .WithRequest(HttpMethod.Get, $"/api/v1/user/{id}")
+            .WithHeader("Accept", "application/json")
             .WillRespond()
-                .WithStatus(HttpStatusCode.NotFound)
-                .WithHeader("Content-Type", "application/json; charset=utf-8");
+            .WithStatus(HttpStatusCode.NotFound);
 
         await _pact.VerifyAsync(async ctx => {
             _mockFactory
