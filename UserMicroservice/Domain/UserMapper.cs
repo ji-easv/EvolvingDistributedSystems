@@ -12,7 +12,7 @@ public static class UserMapper
             Id = user.Id,
             Nickname = user.Nickname,
             Email = user.Email,
-            // CreatedAt = user.CreatedAt,
+            CreatedAt = user.CreatedAt,
             UpdatedAt = user.UpdatedAt
         };
     }
