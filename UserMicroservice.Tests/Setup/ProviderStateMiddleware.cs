@@ -24,6 +24,7 @@ public class ProviderStateMiddleware
     /// Initialises a new instance of the <see cref="ProviderStateMiddleware"/> class.
     /// </summary>
     /// <param name="next">Next request delegate</param>
+    /// <param name="userRepository"></param>
     public ProviderStateMiddleware(RequestDelegate next, IUserRepository userRepository)
     {
         _next = next;
@@ -31,28 +32,14 @@ public class ProviderStateMiddleware
 
         _providerStates = new Dictionary<string, Func<IDictionary<string, object>, HttpContext, Task>>
         {
-            ["a user with id {id} exists"] = EnsureEventExistsAsync,
-            ["a user with id {id} does not exist"] = async (parameters, httpContext) =>
-            {
-                var id = parameters["id"].ToString();
-                var user = await userRepository.GetUserByIdAsync(Guid.Parse(id));
-                if (user == null)
-                {
-                    return;
-                }
-
-                await userRepository.DeleteUserAsync(user);
-            }
+            ["a user with id {id} exists"] = EnsureUserExistsAsync,
+            ["a user with id {id} does not exist"] = EnsureUserDoesNotExistAsync,
+            ["users with the specified IDs exist"] = EnsureValidBatchRequestAsync,
+            ["users with the specified IDs do not exist"] = EnsureInvalidBatchRequestAsync
         };
     }
 
-    /// <summary>
-    /// Ensure an event exists
-    /// </summary>
-    /// <param name="parameters">Event parameters</param>
-    /// <param name="httpContext"></param>
-    /// <returns>Awaitable</returns>
-    private async Task EnsureEventExistsAsync(IDictionary<string, object> parameters, HttpContext httpContext)
+    private async Task EnsureUserExistsAsync(IDictionary<string, object> parameters, HttpContext httpContext)
     {
         var id =  Guid.Parse(parameters["id"].ToString());
         var existingUser = await _userRepository.GetUserByIdAsync(id);
@@ -66,6 +53,52 @@ public class ProviderStateMiddleware
                 CreatedAt = new DateTime(2009, 7, 27, 0, 0, 0),
                 Password = "password"
             });
+        }
+    }
+    
+    private async Task EnsureUserDoesNotExistAsync(IDictionary<string, object> parameters, HttpContext httpContext)
+    {
+        var id = Guid.Parse(parameters["id"].ToString());
+        var existingUser = await _userRepository.GetUserByIdAsync(id);
+        if (existingUser != null)
+        {
+            await _userRepository.DeleteUserAsync(existingUser);
+        }
+    }
+    
+    private async Task EnsureValidBatchRequestAsync(IDictionary<string, object> arg1, HttpContext arg2)
+    {
+        var userIds = arg1["ids"].ToString().Split(",");
+        foreach (var user in userIds)
+        {
+            var id = Guid.Parse(user);
+            var existingUser = await _userRepository.GetUserByIdAsync(id);
+            if (existingUser == null)
+            {
+                await _userRepository.CreateUserAsync(new UserEntity
+                {
+                    Id = id,
+                    Email = $"{id.ToString()}@app.com",
+                    Nickname = id.ToString(),
+                    CreatedAt = new DateTime(2009, 7, 27, 0, 0, 0),
+                    Password = "password"
+                });
+            }
+        }
+    }
+    
+    private async Task EnsureInvalidBatchRequestAsync(IDictionary<string, object> arg1, HttpContext arg2)
+    {
+        var userIds = arg1["ids"].ToString().Split(",");
+        
+        foreach (var user in userIds)
+        {
+            var id = Guid.Parse(user);
+            var existingUser = await _userRepository.GetUserByIdAsync(id);
+            if (existingUser != null)
+            {
+                await _userRepository.DeleteUserAsync(existingUser);
+            }
         }
     }
 

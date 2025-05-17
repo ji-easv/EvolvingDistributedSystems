@@ -56,6 +56,17 @@ public class UserService(IUserRepository userRepository) : IUserService
         await userRepository.DeleteUserAsync(existingUser);
     }
 
+    public async Task<List<GetUserDto>> GetUsersAsync(List<Guid> userIds)
+    {
+        var users = await userRepository.GetUsersByIdsAsync(userIds);
+        if (users == null || users.Count == 0)
+        {
+            throw new NotFoundException("No users found for the provided IDs.");
+        }
+        
+        return users.Select(user => user.ToGetUserDto()).ToList();
+    }
+
     private async Task<UserEntity> GetUserEntityByIdAsync(Guid userId)
     {
         var user = await userRepository.GetUserByIdAsync(userId);

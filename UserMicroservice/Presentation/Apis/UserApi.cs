@@ -26,6 +26,9 @@ public static class UserApi
         api.MapGet("/{userId:guid}", GetUserByIdAsync)
             .WithName("GetUserById");
         
+        api.MapPost("/batch", GetUsersAsync)
+            .WithName("GetUsers");
+        
         return api;
     }
 
@@ -59,5 +62,13 @@ public static class UserApi
     {
         var user = await userService.GetUserByIdAsync(userId);
         return TypedResults.Ok(user);
+    }
+    
+    private static async Task<Results<Ok<List<GetUserDto>>, ProblemHttpResult>> GetUsersAsync(
+        [FromBody] List<Guid> userIds,
+        [FromServices] IUserService userService)
+    {
+        var users = await userService.GetUsersAsync(userIds);
+        return TypedResults.Ok(users);
     }
 }

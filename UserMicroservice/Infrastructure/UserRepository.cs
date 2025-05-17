@@ -34,4 +34,11 @@ public class UserRepository(AppDbContext context) : IUserRepository
         context.Users.Remove(user);
         await context.SaveChangesAsync();
     }
+
+    public async Task<List<UserEntity>> GetUsersByIdsAsync(List<Guid> userIds)
+    {
+        return await context.Users
+            .Where(u => userIds.Contains(u.Id))
+            .ToListAsync();
+    }
 }

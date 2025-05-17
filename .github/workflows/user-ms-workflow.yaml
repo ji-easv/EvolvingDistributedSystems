@@ -51,6 +51,7 @@ jobs:
           echo "PR_BODY=${{ github.event.pull_request.body }}" >> $GITHUB_ENV
           GROUP_MS_BRANCH=$(echo "${{ github.event.pull_request.body }}" | grep -oP '(?<=GroupMS: )[^\s]+')
           echo "group-ms-branch=${GROUP_MS_BRANCH:-main}" >> $GITHUB_ENV
+          echo "The branch name in Group Microservice is: $GROUP_MS_BRANCH"
       
       - name: Verify consumer contract
         uses: ./.github/actions/verify-pact-contract

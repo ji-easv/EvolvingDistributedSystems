@@ -48,4 +48,10 @@ public class MockUserRepository : IUserRepository
         }
         return Task.CompletedTask;
     }
+
+    public Task<List<UserEntity>> GetUsersByIdsAsync(List<Guid> userIds)
+    {
+        var users = _users.Where(u => userIds.Contains(u.Id)).ToList();
+        return Task.FromResult(users);
+    }
 }
