@@ -13,6 +13,8 @@ on:
         required: true
       PACT_BROKER_PASSWORD:
         required: true
+  workflow_dispatch:
+      
 #    inputs:
 #      consumer:
 #        required: true
