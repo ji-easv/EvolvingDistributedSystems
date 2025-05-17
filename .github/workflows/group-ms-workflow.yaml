@@ -5,6 +5,9 @@ on:
     paths:
       - 'GroupMicroservice/**'
       - 'GroupMicroservice.Tests/**'
+      - '.github/workflows/group-ms-workflow.yaml'
+      - '.github/actions/check-schema/**'
+      - '.github/actions/check-consumer-contract/**'
   workflow_call:
     secrets:
       PACT_BROKER:
