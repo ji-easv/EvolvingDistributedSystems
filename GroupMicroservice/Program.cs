@@ -1,10 +1,15 @@
 using Asp.Versioning;
+using GroupMicroservice.Application;
 using GroupMicroservice.Infrastructure;
-using GroupMicroservice.Presentation;
+using GroupMicroservice.Presentation.Apis;
+using GroupMicroservice.Presentation.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -17,6 +22,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddOpenApi(options => { options.OpenApiVersion = OpenApiSpecVersion.OpenApi3_0; });
 
 builder.Services.AddScoped<IGroupRepository, GroupRepository>();
+builder.Services.AddScoped<IGroupService, GroupService>();
 builder.Services.AddProblemDetails();
 
 builder.Services.AddApiVersioning(options =>
@@ -45,6 +51,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseExceptionHandler();
 
 app.AddGroupApi()
     .WithApiVersionSet(apiVersionSet)

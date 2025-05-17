@@ -10,4 +10,11 @@ public class UserApiClient(IHttpClientFactory httpClientFactory)
         var response = await httpClient.GetFromJsonAsync<GetUserDto>($"/api/v1/user/{userId}");
         return response;
     }
+    
+    public async Task<List<GetUserDto>> GetUsersByIdsAsync(List<Guid> userIds)
+    {
+        using var httpClient = httpClientFactory.CreateClient("UserApi");
+        var response = await httpClient.PostAsJsonAsync("/api/v1/user/batch", userIds);
+        return await response.Content.ReadFromJsonAsync<List<GetUserDto>>();
+    }
 }
