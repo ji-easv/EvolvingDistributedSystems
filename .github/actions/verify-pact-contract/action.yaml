@@ -10,7 +10,7 @@ inputs:
   consumer_tags:
     required: false
 
-verify-contract:
+runs:
   using: "composite"
   steps:
     - name: Checkout code
@@ -22,6 +22,7 @@ verify-contract:
         dotnet-version: '9.0.x'
 
     - name: Verify consumer contract against provider
+      shell: bash
       run: |
         echo "Verifying pact..."
         cd UserMicroservice.Tests
