@@ -8,7 +8,16 @@ inputs:
   contract-file:
     required: true
     type: string
-
+  pact-broker:
+    required: true
+    type: string
+  pact-broker-username:
+    required: true
+    type: string
+  pact-broker-password:
+    required: true
+    type: string
+  
 runs:
   using: "composite"
   steps:
@@ -45,4 +54,32 @@ runs:
         else
           echo "Uncommitted changes detected in the contract file! Please update the contract file by running the command 'dotnet test' in the pacts directory, and commit the changes."
           exit 1
+        fi
+
+    - name: Install Pact Broker CLI
+      shell: bash
+      run: |
+        echo "Installing Pact Broker CLI..."
+        curl -fsSL https://raw.githubusercontent.com/pact-foundation/pact-ruby-standalone/master/install.sh | PACT_CLI_VERSION=v2.4.24 bash
+
+    - name: Publish consumer contract
+      shell: bash
+      run: |
+        echo "Publishing consumer contract..."
+        cd GroupMicroservice.Tests/pacts
+        if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+          pact-broker publish GroupMicroservice-UserMicroservice.json \
+            --broker-base-url=${{ inputs.pact-broker }} \
+            --broker-username=${{ inputs.pact-broker-username }} \
+            --broker-password=${{ inputs.pact-broker-password }} \
+            --consumer-app-version=${{ github.sha }} \
+            --tag-with-git-branch \
+            --tag=latest
+        else
+          pact-broker publish GroupMicroservice-UserMicroservice.json \
+            --broker-base-url=${{ inputs.pact-broker }} \
+            --broker-username=${{ inputs.pact-broker-username }} \
+            --broker-password=${{ inputs.pact-broker-password }} \
+            --consumer-app-version=${{ github.sha }} \
+            --tag-with-git-branch
         fi
