@@ -40,29 +40,6 @@ jobs:
         with:
           base-dir: GroupMicroservice.Tests
           contract-file: GroupMicroservice-UserMicroservice.json
-
-      - name: Install Pact Broker CLI
-        run: |
-          echo "Installing Pact Broker CLI..."
-          curl -fsSL https://raw.githubusercontent.com/pact-foundation/pact-ruby-standalone/master/install.sh | PACT_CLI_VERSION=v2.4.24 bash
-        
-      - name: Publish consumer contract
-        run: |
-          echo "Publishing consumer contract..."
-          cd GroupMicroservice.Tests/pacts
-          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
-            pact-broker publish GroupMicroservice-UserMicroservice.json \
-              --broker-base-url=${{ secrets.PACT_BROKER }} \
-              --broker-username=${{ secrets.PACT_BROKER_USERNAME }} \
-              --broker-password=${{ secrets.PACT_BROKER_PASSWORD }} \
-              --consumer-app-version=${{ github.sha }} \
-              --tag-with-git-branch \
-              --tag=latest
-          else
-            pact-broker publish GroupMicroservice-UserMicroservice.json \
-              --broker-base-url=${{ secrets.PACT_BROKER }} \
-              --broker-username=${{ secrets.PACT_BROKER_USERNAME }} \
-              --broker-password=${{ secrets.PACT_BROKER_PASSWORD }} \
-              --consumer-app-version=${{ github.sha }} \
-              --tag-with-git-branch
-          fi
+          pact-broker: ${{ secrets.PACT_BROKER }} 
+          pact-broker-username: ${{ secrets.PACT_BROKER_USERNAME }}
+          pact-broker-password: ${{ secrets.PACT_BROKER_PASSWORD }}
