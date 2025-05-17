@@ -24,8 +24,9 @@ on:
 #        required: true
 
 jobs:
-  check-user-schema:
+  check-openapi-schema:
     runs-on: ubuntu-latest
+    name: Check OpenAPI Schema
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -37,7 +38,8 @@ jobs:
   
   verify-contract:
     runs-on: ubuntu-latest
-    needs: check-user-schema
+    name: Verify consumer contract
+    needs: check-openapi-schema
     steps:
       - name: Verify consumer contract
         uses: ./.github/actions/verify-pact-contract
