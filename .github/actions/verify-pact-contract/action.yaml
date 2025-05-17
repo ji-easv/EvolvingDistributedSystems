@@ -1,0 +1,38 @@
+﻿name: Verify Pact Contract
+
+inputs:
+  pact_broker:
+    required: true
+  pact_broker_username:
+    required: true
+  pact_broker_password:
+    required: true
+  consumer_tags:
+    required: false
+
+verify-contract:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Verify consumer contract against provider
+      run: |
+        echo "Verifying pact..."
+        cd UserMicroservice.Tests
+        dotnet restore
+        
+        PACT_PUBLISH_VERIFICATION_RESULTS=true \
+        PROVIDER_VERSION=${{ github.sha }} \
+        PROVIDER_BRANCH=${{ github.head_ref || github.ref_name }} \
+        PROVIDER_TAGS=$(if [ "${{ github.head_ref || github.ref_name }}" = "main" ]; then echo "main,latest"; else echo "${{ github.head_ref || github.ref_name }}"; fi) \
+        CONSUMER_TAGS=${{ inputs.consumer_tags }} \
+        PactBroker__PactBrokerUri=${{ inputs.pact_broker }} \
+        PactBroker__PactBrokerUsername=${{ inputs.pact_broker_username }} \
+        PactBroker__PactBrokerPassword=${{ inputs.pact_broker_password }} \
+        dotnet test

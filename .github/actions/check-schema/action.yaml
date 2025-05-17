@@ -23,10 +23,25 @@ runs:
       with:
         dotnet-version: '9.0.x'
 
+    - name: Check for uncommitted changes
+      shell: bash
+      run: |
+          echo "Backing up the existing OpenAPI schema..."
+          cd head/${{ inputs.service-name }}
+          mv openapi-schema.json current-openapi-schema.json
+
     - name: Build and generate OpenAPI schema
       shell: bash
       run: |
-        dotnet build head/${{ inputs.service-name }}/${{ inputs.service-name }}.csproj
+        cd head/${{ inputs.service-name }}
+        dotnet build 
+        echo "Checking for uncommitted changes in the OpenAPI schema..."
+        if diff openapi-schema.json current-openapi-schema.json; then
+            echo "No uncommitted changes detected in the OpenAPI schema."
+        else
+            echo "Uncommitted changes detected in the OpenAPI schema! Please update the OpenAPI schema by running the command 'dotnet build' in the ${ inputs.service-name } directory, and commit the changes."
+            exit 1
+        fi
 
     - name: Compare schemas
       shell: bash

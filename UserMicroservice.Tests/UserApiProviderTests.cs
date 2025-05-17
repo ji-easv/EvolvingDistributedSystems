@@ -36,8 +36,8 @@ public class UserApiProviderTests(
                 
                 if (Environment.GetEnvironmentVariable("PACT_PUBLISH_VERIFICATION_RESULTS") == "true") // Only publish results on CI/CD
                 {
-                    var version = Environment.GetEnvironmentVariable("GIT_SHA");
-                    var branch = Environment.GetEnvironmentVariable("GIT_BRANCH");
+                    var version = Environment.GetEnvironmentVariable("PROVIDER_VERSION");
+                    var branch = Environment.GetEnvironmentVariable("PROVIDER_BRANCH");
                     var providerTags = Environment.GetEnvironmentVariable("PROVIDER_TAGS")?.Split(",") ?? [] ;
                     var consumerTags = Environment.GetEnvironmentVariable("CONSUMER_TAGS")?.Split(",") ?? [] ;
                    
