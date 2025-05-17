@@ -39,6 +39,7 @@ jobs:
     needs: check-openapi-schema
     steps:
       - name: Extract Group MS branch from PR description
+        if: ${{ github.event_name == 'pull_request' }}
         id: extract-branch
         run: |
           echo "PR_BODY=${{ github.event.pull_request.body }}" >> $GITHUB_ENV
