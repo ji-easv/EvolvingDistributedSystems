@@ -25,7 +25,7 @@ public static class UserApi
 
         api.MapGet("/{userId:guid}", GetUserByIdAsync)
             .WithName("GetUserById");
-
+        
         return api;
     }
 
