@@ -31,31 +31,6 @@
     {
       "description": "A request for users by IDs that do not exist",
       "pending": false,
-      "request": {
-        "body": {
-          "content": [
-            "df721117-36ab-4b87-a9ec-2319a56f53c9",
-            "a1b2c3d4-e5f6-7890-1234-56789abcdef0"
-          ],
-          "contentType": "application/json",
-          "encoded": false
-        },
-        "headers": {
-          "Content-Type": [
-            "application/json"
-          ]
-        },
-        "method": "POST",
-        "path": "/api/v1/user/batch"
-      },
-      "response": {
-        "status": 404
-      },
-      "type": "Synchronous/HTTP"
-    },
-    {
-      "description": "A request for users by IDs that do not exist",
-      "pending": false,
       "providerStates": [
         {
           "name": "users with the specified IDs do not exist",
@@ -83,54 +58,6 @@
       },
       "response": {
         "status": 404
-      },
-      "type": "Synchronous/HTTP"
-    },
-    {
-      "description": "A valid batch request for users by IDs",
-      "pending": false,
-      "request": {
-        "body": {
-          "content": [
-            "03247a5f-b7c9-4b88-8a6b-a3b583594efd",
-            "a1b2c3d4-e5f6-7890-1234-56789abcdef0"
-          ],
-          "contentType": "application/json",
-          "encoded": false
-        },
-        "headers": {
-          "Content-Type": [
-            "application/json"
-          ]
-        },
-        "method": "POST",
-        "path": "/api/v1/user/batch"
-      },
-      "response": {
-        "body": {
-          "content": [
-            {
-              "createdAt": "2023-01-01T00:00:00",
-              "email": "user1@example.com",
-              "id": "03247a5f-b7c9-4b88-8a6b-a3b583594efd",
-              "nickname": "User1"
-            },
-            {
-              "createdAt": "2023-01-02T00:00:00",
-              "email": "user2@example.com",
-              "id": "a1b2c3d4-e5f6-7890-1234-56789abcdef0",
-              "nickname": "User2"
-            }
-          ],
-          "contentType": "application/json",
-          "encoded": false
-        },
-        "headers": {
-          "Content-Type": [
-            "application/json"
-          ]
-        },
-        "status": 200
       },
       "type": "Synchronous/HTTP"
     },
