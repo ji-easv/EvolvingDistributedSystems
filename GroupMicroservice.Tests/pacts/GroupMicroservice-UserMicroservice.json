@@ -54,6 +54,39 @@
       "type": "Synchronous/HTTP"
     },
     {
+      "description": "A request for users by IDs that do not exist",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "users with the specified IDs do not exist",
+          "params": {
+            "ids": "df721117-36ab-4b87-a9ec-2319a56f53c9,a1b2c3d4-e5f6-7890-1234-56789abcdef0"
+          }
+        }
+      ],
+      "request": {
+        "body": {
+          "content": [
+            "df721117-36ab-4b87-a9ec-2319a56f53c9",
+            "a1b2c3d4-e5f6-7890-1234-56789abcdef0"
+          ],
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "method": "POST",
+        "path": "/api/v1/user/batch"
+      },
+      "response": {
+        "status": 404
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
       "description": "A valid batch request for users by IDs",
       "pending": false,
       "request": {
@@ -102,6 +135,122 @@
       "type": "Synchronous/HTTP"
     },
     {
+      "description": "A valid batch request for users by IDs",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "users with the specified IDs exist",
+          "params": {
+            "ids": "03247a5f-b7c9-4b88-8a6b-a3b583594efd,a1b2c3d4-e5f6-7890-1234-56789abcdef0"
+          }
+        }
+      ],
+      "request": {
+        "body": {
+          "content": [
+            "03247a5f-b7c9-4b88-8a6b-a3b583594efd",
+            "a1b2c3d4-e5f6-7890-1234-56789abcdef0"
+          ],
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "method": "POST",
+        "path": "/api/v1/user/batch"
+      },
+      "response": {
+        "body": {
+          "content": [
+            {
+              "createdAt": "2009-07-27T00:00:00",
+              "email": "string",
+              "id": "03247A5F-B7C9-4B88-8A6B-A3B583594EFD",
+              "nickname": "string"
+            },
+            {
+              "createdAt": "2009-07-27T00:00:00",
+              "email": "string",
+              "id": "A1B2C3D4-E5F6-7890-1234-56789ABCDEF0",
+              "nickname": "string"
+            }
+          ],
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$[*].createdAt": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}"
+                },
+                {
+                  "match": "regex",
+                  "regex": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}"
+                }
+              ]
+            },
+            "$[*].email": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                },
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$[*].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "^[{(]?[0-9A-Fa-f]{8}[-]?[0-9A-Fa-f]{4}[-]?[0-9A-Fa-f]{4}[-]?[0-9A-Fa-f]{4}[-]?[0-9A-Fa-f]{12}[)}]?$"
+                },
+                {
+                  "match": "regex",
+                  "regex": "^[{(]?[0-9A-Fa-f]{8}[-]?[0-9A-Fa-f]{4}[-]?[0-9A-Fa-f]{4}[-]?[0-9A-Fa-f]{4}[-]?[0-9A-Fa-f]{12}[)}]?$"
+                }
+              ]
+            },
+            "$[*].nickname": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                },
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
       "description": "A valid request for a single user by ID",
       "pending": false,
       "providerStates": [
@@ -126,7 +275,7 @@
           "content": {
             "createdAt": "2009-07-27T00:00:00",
             "email": "string",
-            "id": "03247a5f-b7c9-4b88-8a6b-a3b583594efd",
+            "id": "03247A5F-B7C9-4B88-8A6B-A3B583594EFD",
             "nickname": "string"
           },
           "contentType": "application/json",
@@ -136,6 +285,44 @@
           "Content-Type": [
             "application/json"
           ]
+        },
+        "matchingRules": {
+          "body": {
+            "$.createdAt": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}"
+                }
+              ]
+            },
+            "$.email": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "^[{(]?[0-9A-Fa-f]{8}[-]?[0-9A-Fa-f]{4}[-]?[0-9A-Fa-f]{4}[-]?[0-9A-Fa-f]{4}[-]?[0-9A-Fa-f]{12}[)}]?$"
+                }
+              ]
+            },
+            "$.nickname": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
         },
         "status": 200
       },
