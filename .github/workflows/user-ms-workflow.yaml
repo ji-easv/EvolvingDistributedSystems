@@ -38,6 +38,9 @@ jobs:
     name: Verify consumer contract
     needs: check-openapi-schema
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
       - name: Extract Group MS branch from PR description
         if: ${{ github.event_name == 'pull_request' }}
         id: extract-branch
